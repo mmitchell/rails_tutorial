@@ -107,4 +107,12 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "when an email has capital letters" do
+    before do
+      @user.email = 'UPCASE@UP.COM'
+      @user.save
+    end
+    specify { @user.email.should eq @user.email.downcase }
+  end
+
 end
