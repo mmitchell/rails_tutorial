@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'spork'
+require 'simplecov'
+SimpleCov.start
 
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However,
@@ -42,5 +44,4 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
-
 end

@@ -32,6 +32,7 @@ group :test do
   gem 'factory_girl_rails', '4.1.0'
   gem 'shoulda'
   gem 'accept_values_for'
+  gem 'simplecov'
 end
 
 group :production do
