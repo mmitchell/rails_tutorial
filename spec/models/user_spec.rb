@@ -1,11 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  before do
-    @user = User.new(name: "Example User", email: "user@example.com",
-                      password: "foobar", password_confirmation: "foobar")
-  end
-
+  before { @user = FactoryGirl.create(:user) }
   subject { @user }
 
   it { should respond_to(:name) }
@@ -16,6 +12,12 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should be_valid }
+
+  it { should accept_values_for(:email, "john@example.com", "lambda@gusiev.com") }
+  it { should_not accept_values_for(:email, "invalid", nil, "a@b", "john@.com") }
+
+  it { should accept_values_for(:name, "john", "dave") }
+  it { should_not accept_values_for(:name, "", nil, "a"*51) }
 
   describe "when name is not present" do
     before { @user.name = " " }
@@ -91,21 +93,21 @@ describe User do
 
   describe "when email address is already taken" do
     before do
-      user_with_same_email = @user.dup
-      user_with_same_email.save
+      @user_with_same_email = @user.dup
+      @user_with_same_email.save
     end
 
-    it { should_not be_valid }
+    it { @user_with_same_email.should_not be_valid }
   end
 
   describe "when email address is already taken (case insensitive)" do
     before do
-      user_with_same_email = @user.dup
-      user_with_same_email.email = @user.email.upcase
-      user_with_same_email.save
+      @user_with_same_email = @user.dup
+      @user_with_same_email.email = @user.email.upcase
+      @user_with_same_email.save
     end
 
-    it { should_not be_valid }
+    it { @user_with_same_email.should_not be_valid }
   end
 
   describe "when an email has capital letters" do
@@ -120,4 +122,5 @@ describe User do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
   end
+
 end
